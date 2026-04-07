@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>OMEGA RAPTOR | Sound Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 30% 20%, #0a1f0e, #020804);
+            font-family: 'Segoe UI', 'Poppins', 'Courier New', monospace;
+            padding: 80px 20px 20px;
+        }
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(18, 22, 14, 0.85);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0.8rem 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,215,120,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .navbar a {
+            color: #ffdf8c;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 0.3rem 1.2rem;
+            border-radius: 3rem;
+            transition: all 0.2s;
+        }
+        .navbar a:hover {
+            background: rgba(255,180,70,0.3);
+            transform: translateY(-2px);
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(25, 30, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 3rem;
+            padding: 2rem;
+            border: 1px solid rgba(200,170,100,0.5);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+        }
+        h1 {
+            color: #ffdf8c;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        .settings-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .sound-library, .action-sounds {
+            background: #1f2a16aa;
+            border-radius: 2rem;
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 280px;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .sound-library h2, .action-sounds h2 {
+            color: #ffdd99;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,200,100,0.3);
+            display: inline-block;
+            width: 100%;
+        }
+        .sound-list {
+            max-height: 320px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .sound-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #00000066;
+            padding: 8px 12px;
+            border-radius: 3rem;
+            margin: 8px 0;
+            color: #ffdd99;
+            font-size: 0.85rem;
+        }
+        .sound-item button {
+            background: none;
+            border: none;
+            color: #ff8866;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.1s;
+        }
+        .sound-item button:hover {
+            color: #ff3333;
+            transform: scale(1.1);
+        }
+        .import-btn {
+            background: #ffb347;
+            border: none;
+            padding: 8px;
+            border-radius: 3rem;
+            font-size: 0.8rem;
+            width: 100%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.1s;
+        }
+        .import-btn:active {
+            transform: translateY(1px);
+        }
+        .action-select-group {
+            margin-bottom: 1rem;
+        }
+        .action-select-group label {
+            display: block;
+            color: #ffdd99;
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .action-select {
+            width: 100%;
+            background: #2f2a1f;
+            color: #ffcf7a;
+            border: none;
+            border-radius: 3rem;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: #ffb347;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        .back-home:hover {
+            color: #ffdd99;
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #bfb073;
+            margin-top: 1.5rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e2a1aee;
+            backdrop-filter: blur(12px);
+            color: #ffdf8c;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 1000;
+            border-left: 5px solid #ffb347;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast.error {
+            border-left-color: #ff5533;
+            background: #2a1a1aee;
+            color: #ffaa88;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">🏠 HOME</a>
+        <a href="game.html">🎮 GAME</a>
+    </div>
+
+    <div class="container">
+        <h1>⚙️ Sound Settings</h1>
+        <div class="settings-grid">
+            <div class="sound-library">
+                <h2>📀 Sound Library</h2>
+                <div id="soundLibraryList" class="sound-list"></div>
+                <button id="importSoundBtn" class="import-btn">📁 Import New Sound</button>
+            </div>
+            <div class="action-sounds">
+                <h2>🎮 Action Sounds</h2>
+                <div id="actionSelectors"></div>
+            </div>
+        </div>
+        <a href="game.html" class="back-home">← Back to Game</a>
+        <div class="footer-note">✦ Changes saved automatically • Default sounds always available ✦</div>
+    </div>
+
+    <script>
+        // Notification helper
+        function showNotification(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast' + (isError ? ' error' : '');
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        // Sound library logic
+        let audioCtx = null;
+        let globalSoundLibrary = [];
+        let soundSelections = {
+            jump: 'default',
+            hit: 'default',
+            start: 'default',
+            stop: 'default',
+            restart: 'default',
+            resume: 'default'
+        };
+
+        function loadData() {
+            try {
+                let storedLib = localStorage.getItem('globalSoundLibrary');
+                if (storedLib) {
+                    globalSoundLibrary = JSON.parse(storedLib);
+                } else {
+                    globalSoundLibrary = [];
+                }
+                let selections = localStorage.getItem('soundSelections');
+                if (selections) {
+                    soundSelections = JSON.parse(selections);
+                }
+            } catch (e) {
+                showNotification('Error loading sound data', true);
+                globalSoundLibrary = [];
+                soundSelections = { jump: 'default', hit: 'default', start: 'default', stop: 'default', restart: 'default', resume: 'default' };
+            }
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem('globalSoundLibrary', JSON.stringify(globalSoundLibrary));
+                localStorage.setItem('soundSelections', JSON.stringify(soundSelections));
+            } catch (e) {
+                showNotification('Error saving sound data', true);
+            }
+        }
+
+        function refreshUI() {
+            const listDiv = document.getElementById('soundLibraryList');
+            listDiv.innerHTML = '';
+            for (let s of globalSoundLibrary) {
+                const item = document.createElement('div');
+                item.className = 'sound-item';
+                item.innerHTML = `<span>${escapeHtml(s.name)}</span><button class="delete-sound" data-name="${escapeHtml(s.name)}">🗑️</button>`;
+                listDiv.appendChild(item);
+            }
+            document.querySelectorAll('.delete-sound').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const name = btn.getAttribute('data-name');
+                    const index = globalSoundLibrary.findIndex(s => s.name === name);
+                    if (index !== -1) {
+                        globalSoundLibrary.splice(index, 1);
+                        for (let action in soundSelections) {
+                            if (soundSelections[action] === name) soundSelections[action] = 'default';
+                        }
+                        saveData();
+                        refreshUI();
+                        showNotification(`Sound "${name}" deleted.`);
+                    }
+                });
+            });
+
+            const actionsDiv = document.getElementById('actionSelectors');
+            actionsDiv.innerHTML = '';
+            const actions = ['jump', 'hit', 'start', 'stop', 'restart', 'resume'];
+            for (let action of actions) {
+                const div = document.createElement('div');
+                div.className = 'action-select-group';
+                div.innerHTML = `<label>${action.toUpperCase()}</label>`;
+                const select = document.createElement('select');
+                select.className = 'action-select';
+                let options = '<option value="default">Default</option>';
+                for (let s of globalSoundLibrary) options += `<option value="${escapeHtml(s.name)}">${escapeHtml(s.name)}</option>`;
+                select.innerHTML = options;
+                select.value = soundSelections[action] || 'default';
+                select.addEventListener('change', (e) => {
+                    soundSelections[action] = e.target.value;
+                    saveData();
+                    showNotification(`Sound for ${action} updated.`);
+                });
+                div.appendChild(select);
+                actionsDiv.appendChild(div);
+            }
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        async function importSound(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const dataURL = e.target.result;
+                if (globalSoundLibrary.some(s => s.name === file.name)) {
+                    showNotification(`Sound "${file.name}" already exists.`, true);
+                    return;
+                }
+                try {
+                    if (!audioCtx) {
+                        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    }
+                    const arrayBuffer = await fetch(dataURL).then(res => res.arrayBuffer());
+                    await audioCtx.decodeAudioData(arrayBuffer);
+                    globalSoundLibrary.push({ name: file.name, dataURL: dataURL });
+                    saveData();
+                    refreshUI();
+                    showNotification(`Sound "${file.name}" imported.`);
+                } catch(err) {
+                    showNotification("Invalid audio file or format not supported.", true);
+                }
+            };
+            reader.onerror = () => showNotification("File read error.", true);
+            reader.readAsDataURL(file);
+        }
+
+        loadData();
+        refreshUI();
+
+        document.getElementById('importSoundBtn').addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'audio/*';
+            input.onchange = (e) => {
+                if (e.target.files[0]) importSound(e.target.files[0]);
+            };
+            input.click();
+        });
+    </script>
+</body>
+</html>
