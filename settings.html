@@ -6,197 +6,608 @@
     <title>OMEGA RAPTOR | Sound Settings</title>
     <link rel="icon" type="image/x-icon" href="favicon.png">
     <style>
+        /* --- PREMIUM INTERACTIVE CYBERPUNK HUD OVERHAUL --- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
+
         body {
             min-height: 100vh;
-            background: radial-gradient(circle at 30% 20%, #0a1f0e, #020804);
-            font-family: 'Segoe UI', 'Poppins', 'Courier New', monospace;
-            padding: 80px 20px 20px;
+            background: radial-gradient(circle at 50% 15%, #051622 0%, #02080f 40%, #000103 100%);
+            font-family: 'Segoe UI', 'Poppins', system-ui, -apple-system, sans-serif;
+            padding: 140px 20px 60px;
+            color: #f1f5f9;
+            overflow-x: hidden;
+            position: relative;
         }
+
+        /* Ambient holographic digital grid backdrop */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: 
+                linear-gradient(rgba(34, 211, 238, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(34, 211, 238, 0.015) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Neon energy line across the top screen */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, #22d3ee, #6366f1, #22d3ee, transparent);
+            z-index: 101;
+            filter: drop-shadow(0 0 10px #22d3ee);
+        }
+
+        /* Fixed Elite Micro-Faceted Glass Topbar Navigation */
         .navbar {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(18, 22, 14, 0.85);
-            backdrop-filter: blur(12px);
+            top: 0; left: 0; right: 0;
+            background: rgba(2, 6, 12, 0.65);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             display: flex;
             justify-content: center;
             gap: 2rem;
-            padding: 0.8rem 0;
+            padding: 1.1rem 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(255,215,120,0.3);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), inset 0 -1px 0 rgba(255, 255, 255, 0.03);
         }
+        
         .navbar a {
-            color: #ffdf8c;
+            color: #94a3b8;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            padding: 0.3rem 1.2rem;
-            border-radius: 3rem;
-            transition: all 0.2s;
+            font-weight: 800;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            padding: 0.6rem 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.01);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            text-transform: uppercase;
         }
+        
         .navbar a:hover {
-            background: rgba(255,180,70,0.3);
+            color: #22d3ee;
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.08), rgba(99, 102, 241, 0.08));
+            border-color: rgba(34, 211, 238, 0.4);
+            text-shadow: 0 0 8px rgba(34, 211, 238, 0.6);
+            box-shadow: 0 0 30px rgba(34, 211, 238, 0.15), inset 0 0 8px rgba(34, 211, 238, 0.1);
             transform: translateY(-2px);
         }
+
+        /* Command Station Premium Glassmorphic Container */
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            background: rgba(25, 30, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 3rem;
-            padding: 2rem;
-            border: 1px solid rgba(200,170,100,0.5);
-            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, rgba(4, 15, 26, 0.65), rgba(2, 6, 12, 0.8));
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 24px;
+            padding: 4rem 3.5rem;
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.9), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.05),
+                        0 0 80px rgba(34, 211, 238, 0.01);
+            position: relative;
+            z-index: 1;
         }
+
+        /* Container Decorative Corner Accents */
+        .container::before {
+            content: ''; position: absolute; top: -1px; left: 30px; width: 80px; height: 1px; background: #22d3ee; box-shadow: 0 0 10px #22d3ee;
+        }
+        .container::after {
+            content: ''; position: absolute; bottom: -1px; right: 30px; width: 80px; height: 1px; background: #6366f1; box-shadow: 0 0 10px #6366f1;
+        }
+
+        /* Header Layout Section Alignment */
+        .header-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 2.5rem;
+            width: 100%;
+        }
+
         h1 {
-            color: #ffdf8c;
+            color: #ffffff;
             text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #ffffff 30%, #22d3ee 70%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(34, 211, 238, 0.2));
         }
+
+        /* High-End Tactical Dragon Selector Layout via CSS Pure Styling */
+        .dragon-selector-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            max-width: 380px;
+            position: relative;
+            padding: 10px;
+            background: rgba(3, 10, 20, 0.25);
+            border-radius: 20px;
+            border: 1px solid rgba(34, 211, 238, 0.05);
+            box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.02);
+        }
+
+        .dragon-selector-container::before {
+            content: '[';
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            color: rgba(34, 211, 238, 0.3);
+            font-size: 0.7rem;
+            font-family: monospace;
+        }
+
+        .dragon-selector-container::after {
+            content: ']';
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: rgba(34, 211, 238, 0.3);
+            font-size: 0.7rem;
+            font-family: monospace;
+        }
+        
+        .dragon-selector-container label {
+            font-size: 0.72rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 800;
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            padding-left: 4px;
+        }
+
+        .dragon-selector-container:hover label {
+            color: #22d3ee;
+            text-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+        }
+        
+        .dragon-select {
+            width: 100%;
+            background: linear-gradient(135deg, #020813 0%, #01040a 100%);
+            color: #38bdf8;
+            border: 1px solid rgba(34, 211, 238, 0.2);
+            border-radius: 14px;
+            padding: 16px 24px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.8), 0 10px 30px rgba(0, 0, 0, 0.5);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2322d3ee'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 22px) center;
+            background-size: 16px;
+        }
+        
+        .dragon-select:focus, .dragon-select:hover {
+            border-color: #22d3ee;
+            color: #ffffff;
+            box-shadow: 0 0 35px rgba(34, 211, 238, 0.25), inset 0 2px 6px rgba(0, 0, 0, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .dragon-select option {
+            background: #020813;
+            color: #cbd5e1;
+            font-weight: 600;
+            padding: 14px;
+        }
+    option:checked {
+    background-color: #22d3ee !important; /* Aapka custom color */
+    color: #020813 !important;
+}
+
+        
+     
+        /* Dual-Grid Symmetrical Controls Dashboard */
         .settings-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 2rem;
+            gap: 3.5rem;
             justify-content: center;
-        }
-        .sound-library, .action-sounds {
-            background: #1f2a16aa;
-            border-radius: 2rem;
-            padding: 1.5rem;
-            flex: 1;
-            min-width: 280px;
-            backdrop-filter: blur(4px);
-            transition: all 0.2s;
-        }
-        .sound-library h2, .action-sounds h2 {
-            color: #ffdd99;
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,200,100,0.3);
-            display: inline-block;
             width: 100%;
         }
-        .sound-list {
-            max-height: 320px;
-            overflow-y: auto;
-            margin-bottom: 1rem;
+        
+        .sound-library, .action-sounds {
+            background: rgba(2, 8, 16, 0.45);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            flex: 1;
+            min-width: 340px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.4s;
+            position: relative;
         }
+        
+        .sound-library:hover, .action-sounds:hover {
+            border-color: rgba(34, 211, 238, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        .sound-library h2, .action-sounds h2 {
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            border-bottom: 2px solid rgba(34, 211, 238, 0.1);
+            padding-bottom: 1.2rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .sound-library h2::after, .action-sounds h2::after {
+            content: ''; position: absolute; bottom: -2px; left: 35%; width: 30%; height: 2px; background: linear-gradient(90deg, #22d3ee, #6366f1);
+        }
+
+        /* High Precision HUD Scroll Container */
+        .sound-list {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-bottom: 2.5rem;
+            padding-right: 10px;
+        }
+        
+        .sound-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .sound-list::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .sound-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #22d3ee, #6366f1);
+            border-radius: 10px;
+        }
+
+        /* Interactive Sound Row Panels */
         .sound-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #00000066;
-            padding: 8px 12px;
-            border-radius: 3rem;
-            margin: 8px 0;
-            color: #ffdd99;
-            font-size: 0.85rem;
+            background: linear-gradient(90deg, rgba(3, 10, 20, 0.6), rgba(1, 4, 10, 0.4));
+            padding: 16px 22px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        
+        .sound-item:hover {
+            background: linear-gradient(90deg, rgba(34, 211, 238, 0.06), rgba(99, 102, 241, 0.02));
+            border-color: rgba(34, 211, 238, 0.25);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+        
         .sound-item button {
             background: none;
             border: none;
-            color: #ff8866;
+            color: #475569;
             cursor: pointer;
-            font-size: 1rem;
-            transition: 0.1s;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            line-height: 1;
         }
+        
         .sound-item button:hover {
-            color: #ff3333;
-            transform: scale(1.1);
+            color: #ef4444;
+            transform: scale(1.25);
+            filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
         }
+
+        /* Neon Tactical Action Trigger Buttons */
         .import-btn {
-            background: #ffb347;
+            background: linear-gradient(135deg, #0284c7 0%, #22d3ee 50%, #6366f1 100%);
+            background-size: 200% auto;
+            color: #01040a;
             border: none;
-            padding: 8px;
-            border-radius: 3rem;
-            font-size: 0.8rem;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 0.88rem;
             width: 100%;
             cursor: pointer;
-            font-weight: bold;
-            transition: 0.1s;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 25px rgba(34, 211, 238, 0.25);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .import-btn:active {
-            transform: translateY(1px);
+        
+        .import-btn:hover {
+            background-position: right center;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(34, 211, 238, 0.4);
+            color: #ffffff;
         }
+
+        /* Action Mapping Selectors Infrastructure */
         .action-select-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.8rem;
         }
+        
         .action-select-group label {
             display: block;
-            color: #ffdd99;
-            font-size: 0.8rem;
-            margin-bottom: 5px;
+            color: #475569;
+            font-size: 0.7rem;
+            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2.5px;
+            font-weight: 800;
+            transition: color 0.3s;
         }
+        
+        .action-select-group:hover label {
+            color: #22d3ee;
+        }
+        
         .action-select {
             width: 100%;
-            background: #2f2a1f;
-            color: #ffcf7a;
-            border: none;
-            border-radius: 3rem;
-            padding: 8px 12px;
-            font-size: 0.8rem;
+            background: #02060d;
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.12);
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
             cursor: pointer;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: all 0.3s ease;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2338bdf8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: calc(100% - 18px) center;
+            background-size: 14px;
         }
+        
+        .action-select:focus, .action-select:hover {
+            border-color: #38bdf8;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.15), inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+
         .back-home {
-            display: block;
+            display: inline-block;
+            width: 100%;
             text-align: center;
-            margin-top: 2rem;
-            color: #ffb347;
+            margin-top: 4rem;
+            color: #22d3ee;
             text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            transition: 0.2s;
+            font-weight: 800;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
         }
+        
         .back-home:hover {
-            color: #ffdd99;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(34, 211, 238, 0.8);
+            transform: translateX(-4px);
         }
+        
         .footer-note {
             text-align: center;
             font-size: 0.7rem;
-            color: #bfb073;
-            margin-top: 1.5rem;
+            color: #334155;
+            margin-top: 2.5rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
-        /* Toast */
+        /* Immersive HUD Toast Systems Overlay */
         .toast {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #1e2a1aee;
-            backdrop-filter: blur(12px);
-            color: #ffdf8c;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: bold;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(135deg, rgba(2, 8, 16, 0.95), rgba(6, 18, 36, 0.95));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: #ffffff;
+            padding: 18px 36px;
+            border-radius: 14px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
             z-index: 1000;
-            border-left: 5px solid #ffb347;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+            border-left: 5px solid #22d3ee;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
             opacity: 0;
-            transform: translateX(30px);
-            transition: all 0.3s ease;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
         }
+        
         .toast.show {
             opacity: 1;
-            transform: translateX(0);
+            transform: translateY(0) scale(1);
         }
+        
         .toast.error {
-            border-left-color: #ff5533;
-            background: #2a1a1aee;
-            color: #ffaa88;
+            border-color: rgba(239, 68, 68, 0.4);
+            border-left-color: #ef4444;
+            background: linear-gradient(135deg, rgba(20, 4, 4, 0.95), rgba(40, 10, 10, 0.95));
+            color: #fca5a5;
         }
+        .footer-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #0055cb; 
+    letter-spacing: 2px;
+    margin-top: 3rem;
+    display: block;
+    font-weight: bold;
+    position: relative;
+    padding: 10px 20px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Individual Spans Base Configuration */
+.footer-note span {
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Colors Before Hover */
+.footer-note .cyber-star { color: #fcfdfe; }
+.footer-note .cyber-dots { color: #ffffff; letter-spacing: 4px; }
+.footer-note .cyber-line { color: rgb(244, 238, 238); }
+.footer-note .cyber-core { color: #f5f6f9; transform: scale(1); }
+
+/* --- PREMIUM INTERACTIVE HOVER EFFECTS (Jab Main Card par Hover hoga) --- */
+
+/* 1. Cyber Stars: Glow aur Breath Effect */
+.home-card:hover .footer-note .cyber-star {
+    color: #22d3ee;
+    text-shadow: 0 0 10px #22d3ee;
+    animation: starPulse 1.5s infinite ease-in-out;
+}
+
+/* 2. Cyber Dots: Shifting aur Range Colors */
+.home-card:hover .footer-note .cyber-dots {
+    color: #6366f1;
+    text-shadow: 0 0 8px #6366f1;
+}
+
+/* 3. Cyber Line: Light Speed Beam Effect */
+.home-card:hover .footer-note .cyber-line {
+    color: rgba(34, 211, 238, 0.5);
+    text-shadow: 0 0 4px rgba(34, 211, 238, 0.3);
+}
+
+/* 4. Cyber Core: Chota Bada Hona (Size Pulse) + Intense Glow */
+.home-card:hover .footer-note .cyber-core {
+    color: #ffffff;
+    text-shadow: 0 0 15px #22d3ee, 0 0 30px #6366f1;
+    animation: coreSizeChange 2s infinite ease-in-out;
+}
+
+/* 5. Custom Dynamic Border Lines for Footer Box */
+.footer-note::before,
+.footer-note::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #22d3ee, transparent);
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+}
+
+.footer-note::before { top: 0; left: 50%; transform: translateX(-50%); }
+.footer-note::after { bottom: 0; left: 50%; transform: translateX(-50%); }
+
+/* Hover hone par fine borders expanding effect */
+.home-card:hover .footer-note::before,
+.home-card:hover .footer-note::after {
+    width: 60%; /* Border lines expand ho kar 60% tak jayengi */
+    opacity: 1;
+}
+
+/* --- ANIMATIONS KEYFRAMES ENGINE --- */
+
+/* Stars ke liye chota-bada hone ka rhythmic loop */
+@keyframes starPulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Main Core Symbol ka dynamic size fluctuation */
+@keyframes coreSizeChange {
+    0%, 100% { 
+        transform: scale(1); 
+        filter: brightness(1); 
+    }
+    50% { 
+        transform: scale(1.4); /* Size bada hoga */
+        filter: brightness(1.5); 
+    }
+}
+
+        /* --- HIGH PERFORMANCE MOBILE RESPONSIVE ADAPTIVE ENGINE --- */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 110px 12px 40px;
+            }
+            .navbar {
+                gap: 0.8rem;
+                padding: 0.9rem 0;
+            }
+            .navbar a {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.72rem;
+                letter-spacing: 1.5px;
+            }
+            .container {
+                padding: 2.2rem 1.2rem;
+                border-radius: 16px;
+            }
+            h1 {
+                font-size: 1.95rem;
+                letter-spacing: 2px;
+            }
+            .header-wrapper {
+                margin-bottom: 2.5rem;
+                padding-bottom: 1.8rem;
+            }
+            .settings-grid {
+                gap: 2rem;
+            }
+            .sound-library, .action-sounds {
+                padding: 2.2rem 1.2rem;
+                min-width: 100%;
+            }
+            .sound-item {
+                padding: 12px 16px;
+                font-size: 0.85rem;
+            }
+            .dragon-selector-container {
+                max-width: 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -206,7 +617,22 @@
     </div>
 
     <div class="container">
-        <h1>⚙️ Sound Settings</h1>
+        <div class="header-wrapper">
+            <h1>⚙️ Sound Settings</h1>
+            
+            <!-- Dragon Array Selector HUD Area -->
+            <div class="dragon-selector-container">
+                <label for="dragonSelect">Select Active Dragon</label>
+                <select id="dragonSelect" class="dragon-select">
+                     <option value="Dino ." defaultSelected>Dino</option>
+                     <option value="Dino ..">Dino light</option>
+                     <option value="Dino ...">Cyber Dragon</option>
+                     <option value="Dino ....">Volcanic Dragon</option>
+                     <option value="Dino .....">Shadow Raptor</option>
+                </select>
+            </div>
+        </div>
+
         <div class="settings-grid">
             <div class="sound-library">
                 <h2>📀 Sound Library</h2>
@@ -219,8 +645,15 @@
             </div>
         </div>
         <a href="game.html" class="back-home">← Back to Game</a>
-        <div class="footer-note">✦ Changes saved automatically • Default sounds always available ✦</div>
-    </div>
+<div class="footer-note">
+    <span class="cyber-star">✦</span> 
+    <span class="cyber-dots">• •</span> 
+    <span class="cyber-line">───</span> 
+    <span class="cyber-core">❖</span> 
+    <span class="cyber-line">───</span> 
+    <span class="cyber-dots">• •</span> 
+    <span class="cyber-star">✦</span>
+</div>      </div>
 
     <script>
         // Notification helper
@@ -235,6 +668,13 @@
                 setTimeout(() => toast.remove(), 300);
             }, 2500);
         }
+        const dragonSelect = document.getElementById('dragonSelect');
+        dragonSelect.value = localStorage.getItem('selectedDragon')||'Dino .';
+        dragonSelect.addEventListener('change', (e) => {
+            localStorage.setItem('selectedDragon', e.target.value);
+            showNotification(`Active Dragon updated to: ${e.target.value || 'None'}`);
+        });
+
 
         // Sound library logic
         let audioCtx = null;
