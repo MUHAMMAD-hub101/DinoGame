@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced CSS Properties - Expert Level Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 5px 15px rgba(0, 114, 255, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0a0a0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .category-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: rgba(0, 198, 255, 0.3);
+        }
+        
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .category-card:hover::before {
+            left: 100%;
+        }
+        
+        .category-title {
+            font-size: 1.8rem;
+            color: #00c6ff;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 198, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .property-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .property-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #0072ff;
+            transition: all 0.3s ease;
+        }
+        
+        .property-item:hover {
+            background: rgba(0, 114, 255, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .property-name {
+            font-family: 'Consolas', 'Monaco', monospace;
+            color: #00ff9d;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .property-desc {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+        }
+        
+        .demo-section {
+            margin: 60px 0;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #00c6ff;
+            margin-bottom: 40px;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .demo-card {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .demo-card h3 {
+            color: #00ff9d;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .demo-element {
+            width: 100%;
+            height: 200px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-block {
+            background: #1a1a2e;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            color: #00ff9d;
+            overflow-x: auto;
+            margin-top: 15px;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+        }
+        
+        .css-selector {
+            color: #ff6b9d;
+        }
+        
+        .css-property {
+            color: #00c6ff;
+        }
+        
+        .css-value {
+            color: #ffd166;
+        }
+        
+        /* Advanced CSS Demo Styles */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            padding: 20px;
+            background: linear-gradient(45deg, #1a1a2e, #16213e);
+        }
+        
+        .grid-item {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .clip-path-demo {
+            background: linear-gradient(45deg, #ff6b9d, #ffd166);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        
+        .blend-mode-demo {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            position: relative;
+        }
+        
+        .blend-mode-demo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b9d, #ffd166);
+            mix-blend-mode: multiply;
+            opacity: 0.7;
+        }
+        
+        .mask-demo {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            -webkit-mask: radial-gradient(circle at center, transparent 30%, black 70%);
+            mask: radial-gradient(circle at center, transparent 30%, black 70%);
+        }
+        
+        .filter-demo {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.5)) hue-rotate(45deg);
+        }
+        
+        .transform-3d-demo {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            transform: perspective(500px) rotateX(15deg) rotateY(15deg);
+            transform-style: preserve-3d;
+        }
+        
+        .container-query-demo {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            container-type: inline-size;
+        }
+        
+        @container (min-width: 300px) {
+            .container-query-demo {
+                background: linear-gradient(45deg, #ff6b9d, #ffd166);
+            }
+        }
+        
+        .scroll-snap-demo {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            padding: 20px;
+            background: #1a1a2e;
+        }
+        
+        .scroll-item {
+            flex: 0 0 150px;
+            height: 150px;
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            border-radius: 10px;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .variable-demo {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            --primary-color: #0072ff;
+            --secondary-color: #00c6ff;
+        }
+        
+        .backdrop-demo {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+        }
+        
+        .aspect-ratio-demo {
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            aspect-ratio: 16/9;
+            width: 100%;
+        }
+        
+        .highlight {
+            background: linear-gradient(90deg, transparent, rgba(0, 198, 255, 0.1), transparent);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px;
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .skill-level {
+            display: inline-block;
+            padding: 5px 15px;
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Advanced CSS Properties</h1>
+            <p class="subtitle">Essential CSS properties every expert-level developer must master for modern web development</p>
+        </header>
+        
+        <div class="category-grid">
+            <!-- Layout & Grid -->
+            <div class="category-card">
+                <h2 class="category-title">📐 Layout & Grid</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">display: grid;</div>
+                        <div class="property-desc">CSS Grid Layout - two-dimensional layout system</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">grid-template-areas</div>
+                        <div class="property-desc">Define grid areas with semantic names</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">grid-auto-flow: dense;</div>
+                        <div class="property-desc">Auto-placement with backtracking to fill holes</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">subgrid</div>
+                        <div class="property-desc">Nested grids that inherit parent grid lines</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">container-type / @container</div>
+                        <div class="property-desc">Container queries for component-based responsive design</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Flexbox Advanced -->
+            <div class="category-card">
+                <h2 class="category-title">⚡ Flexbox Advanced</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">gap, row-gap, column-gap</div>
+                        <div class="property-desc">Control spacing between flex items (modern approach)</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">flex: 1 0 auto;</div>
+                        <div class="property-desc">Shorthand for flex-grow, flex-shrink, flex-basis</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">align-content</div>
+                        <div class="property-desc">Align flex lines when there's extra space</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">order</div>
+                        <div class="property-desc">Visual reordering of flex items</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transform & 3D -->
+            <div class="category-card">
+                <h2 class="category-title">🎭 Transform & 3D</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">transform-style: preserve-3d;</div>
+                        <div class="property-desc">Enable 3D transformations on children</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">perspective</div>
+                        <div class="property-desc">3D perspective for depth</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">backface-visibility</div>
+                        <div class="property-desc">Control visibility of back face in 3D transforms</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">transform-origin</div>
+                        <div class="property-desc">Change the origin point of transformations</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">scale3d(), rotate3d()</div>
+                        <div class="property-desc">3D-specific transformation functions</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Animation & Transition -->
+            <div class="category-card">
+                <h2 class="category-title">🎬 Animation & Transition</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">@keyframes</div>
+                        <div class="property-desc">Define animation sequences</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">animation-fill-mode</div>
+                        <div class="property-desc">Control styles before/after animation</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">steps() timing function</div>
+                        <div class="property-desc">Create stepped animations</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">will-change</div>
+                        <div class="property-desc">Hint browser about upcoming changes (use sparingly)</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">transition-timing-function: cubic-bezier()</div>
+                        <div class="property-desc">Custom timing functions for smooth animations</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Clip, Mask & Blend -->
+            <div class="category-card">
+                <h2 class="category-title">🎨 Clip, Mask & Blend</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">clip-path</div>
+                        <div class="property-desc">Create custom clipping shapes</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">mask-image / -webkit-mask-image</div>
+                        <div class="property-desc">Apply image/gradient masks</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">mix-blend-mode</div>
+                        <div class="property-desc">Blend element with background (like Photoshop)</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">background-blend-mode</div>
+                        <div class="property-desc">Blend multiple backgrounds together</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">isolation: isolate;</div>
+                        <div class="property-desc">Create new stacking context for blend modes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filters & Effects -->
+            <div class="category-card">
+                <h2 class="category-title">✨ Filters & Effects</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">backdrop-filter</div>
+                        <div class="property-desc">Apply filters to area behind element (frosted glass)</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">filter: drop-shadow()</div>
+                        <div class="property-desc">Better shadows that follow element shape</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">-webkit-background-clip: text</div>
+                        <div class="property-desc">Clip background to text (gradient text)</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">-webkit-text-fill-color: transparent</div>
+                        <div class="property-desc">Make text transparent for background clip</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">shape-outside</div>
+                        <div class="property-desc">Make text wrap around custom shapes</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CSS Custom Properties -->
+            <div class="category-card">
+                <h2 class="category-title">🎯 CSS Custom Properties</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">--variable-name: value;</div>
+                        <div class="property-desc">Define custom properties</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">var(--variable, fallback)</div>
+                        <div class="property-desc">Use custom properties with fallback</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">calc() with variables</div>
+                        <div class="property-desc">Dynamic calculations with custom properties</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">@property</div>
+                        <div class="property-desc">Register custom properties with types and constraints</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modern & Experimental -->
+            <div class="category-card">
+                <h2 class="category-title">🚀 Modern & Experimental</h2>
+                <div class="property-list">
+                    <div class="property-item">
+                        <div class="property-name">aspect-ratio</div>
+                        <div class="property-desc">Maintain element aspect ratio</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">scroll-snap-type</div>
+                        <div class="property-desc">Control scroll snapping behavior</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">content-visibility</div>
+                        <div class="property-desc">Optimize rendering performance</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">@supports</div>
+                        <div class="property-desc">Feature queries for progressive enhancement</div>
+                    </div>
+                    <div class="property-item">
+                        <div class="property-name">accent-color</div>
+                        <div class="property-desc">Style form control accents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="demo-title">Live Advanced CSS Demos</h2>
+            
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>CSS Grid with Grid Areas</h3>
+                    <div class="demo-element grid-container">
+                        <div class="grid-item">Header</div>
+                        <div class="grid-item">Sidebar</div>
+                        <div class="grid-item">Main</div>
+                        <div class="grid-item">Footer</div>
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.container</span> {<br>
+&nbsp;&nbsp;<span class="css-property">display</span>: <span class="css-value">grid</span>;<br>
+&nbsp;&nbsp;<span class="css-property">grid-template-areas</span>: <span class="css-value">"header header" "sidebar main" "footer footer"</span>;<br>
+&nbsp;&nbsp;<span class="css-property">grid-template-columns</span>: <span class="css-value">1fr 3fr</span>;<br>
+}
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>Clip-Path Polygon</h3>
+                    <div class="demo-element clip-path-demo">
+                        Hexagon Shape
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.element</span> {<br>
+&nbsp;&nbsp;<span class="css-property">clip-path</span>: <span class="css-value">polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)</span>;<br>
+}
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>Blend Mode Effect</h3>
+                    <div class="demo-element blend-mode-demo">
+                        Multiply Blend
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.element::before</span> {<br>
+&nbsp;&nbsp;<span class="css-property">mix-blend-mode</span>: <span class="css-value">multiply</span>;<br>
+&nbsp;&nbsp;<span class="css-property">isolation</span>: <span class="css-value">isolate</span>;<br>
+}
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>CSS Mask with Gradient</h3>
+                    <div class="demo-element mask-demo">
+                        Radial Mask
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.element</span> {<br>
+&nbsp;&nbsp;<span class="css-property">-webkit-mask</span>: <span class="css-value">radial-gradient(circle at center, transparent 30%, black 70%)</span>;<br>
+&nbsp;&nbsp;<span class="css-property">mask</span>: <span class="css-value">radial-gradient(circle at center, transparent 30%, black 70%)</span>;<br>
+}
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>Advanced Filters</h3>
+                    <div class="demo-element filter-demo">
+                        Drop Shadow + Hue
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.element</span> {<br>
+&nbsp;&nbsp;<span class="css-property">filter</span>: <span class="css-value">drop-shadow(10px 10px 20px rgba(0,0,0,0.5)) hue-rotate(45deg)</span>;<br>
+}
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>3D Transform</h3>
+                    <div class="demo-element transform-3d-demo">
+                        3D Perspective
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.element</span> {<br>
+&nbsp;&nbsp;<span class="css-property">transform</span>: <span class="css-value">perspective(500px) rotateX(15deg) rotateY(15deg)</span>;<br>
+&nbsp;&nbsp;<span class="css-property">transform-style</span>: <span class="css-value">preserve-3d</span>;<br>
+}
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>Container Query</h3>
+                    <div class="demo-element container-query-demo">
+                        Resize Container
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.element</span> {<br>
+&nbsp;&nbsp;<span class="css-property">container-type</span>: <span class="css-value">inline-size</span>;<br>
+}<br><br>
+<span class="css-selector">@container (min-width: 300px)</span> {<br>
+&nbsp;&nbsp;<span class="css-selector">.element</span> {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="css-property">background</span>: <span class="css-value">linear-gradient(45deg, #ff6b9d, #ffd166)</span>;<br>
+&nbsp;&nbsp;}<br>
+}
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <h3>Scroll Snap</h3>
+                    <div class="scroll-snap-demo">
+                        <div class="scroll-item">Item 1</div>
+                        <div class="scroll-item">Item 2</div>
+                        <div class="scroll-item">Item 3</div>
+                        <div class="scroll-item">Item 4</div>
+                        <div class="scroll-item">Item 5</div>
+                    </div>
+                    <div class="code-block">
+<span class="css-selector">.container</span> {<br>
+&nbsp;&nbsp;<span class="css-property">scroll-snap-type</span>: <span class="css-value">x mandatory</span>;<br>
+}<br><br>
+<span class="css-selector">.item</span> {<br>
+&nbsp;&nbsp;<span class="css-property">scroll-snap-align</span>: <span class="css-value">start</span>;<br>
+}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <h2>Key Takeaways for Expert CSS Developers</h2>
+            <div style="max-width: 800px; margin: 20px auto;">
+                <p style="margin-bottom: 15px;">Mastering these properties separates intermediate from expert CSS developers:</p>
+                
+                <ul style="text-align: left; display: inline-block; margin: 20px 0;">
+                    <li style="margin-bottom: 10px;"><span class="highlight">Performance</span>: Understand which properties trigger layout/paint/composite</li>
+                    <li style="margin-bottom: 10px;"><span class="highlight">Accessibility</span>: Ensure animations respect reduced motion preferences</li>
+                    <li style="margin-bottom: 10px;"><span class="highlight">Progressive Enhancement</span>: Use @supports for graceful degradation</li>
+                    <li style="margin-bottom: 10px;"><span class="highlight">Modern Layouts</span>: Combine Grid, Flexbox, and Container Queries</li>
+                    <li style="margin-bottom: 10px;"><span class="highlight">Creative Effects</span>: Use blend modes, filters, and masks responsibly</li>
+                </ul>
+                
+                <p style="margin-top: 30px; font-size: 1.2rem;">
+                    Expert CSS isn't just about knowing properties—it's about knowing 
+                    <span class="highlight">when</span> and <span class="highlight">how</span> to use them effectively!
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

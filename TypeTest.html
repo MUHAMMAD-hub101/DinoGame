@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CYBER-TYPE // PRO LEAGUE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030508;
+      --panel: rgba(10, 15, 25, 0.85);
+      --accent: #00f2ff;
+      --accent-dim: rgba(0, 242, 255, 0.15);
+      --magenta: #ff0055;
+      --green: #00ff41;
+      --border-color: #1a2332;
+      --font-main: 'Rajdhani', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+      --glow: 0 0 20px rgba(0, 242, 255, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 50%, #0a1018 0%, #030508 100%),
+        linear-gradient(rgba(0, 242, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+      color: #e2e8f0;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden; /* Strict: No browser scrollbar */
+    }
+
+    /* Main Container */
+    .app {
+      width: 95vw;
+      height: 92vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5vh;
+      max-width: 1400px;
+    }
+
+    /* Header Styling */
+    .header-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5vh;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 4vh, 2.5rem);
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      text-shadow: var(--glow);
+    }
+
+    #status {
+      font-weight: 600;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+
+    /* Stats Display */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      flex-shrink: 0;
+    }
+
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--border-color);
+      padding: 1.2vh 15px;
+      text-align: center;
+      position: relative;
+      clip-path: polygon(0 0, 100% 0, 100% 75%, 90% 100%, 0 100%);
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 0.2vh;
+    }
+
+    .stat-value {
+      font-size: clamp(1.2rem, 3.5vh, 2rem);
+      font-weight: 700;
+      color: #fff;
+      font-family: var(--font-code);
+    }
+
+    /* Layout Grid */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 20px;
+      flex-grow: 1;
+      min-height: 0; /* Important for preventing overflow */
+    }
+
+    .game-window {
+      background: var(--panel);
+      border: 1px solid var(--border-color);
+      padding: 2.5vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5vh;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Control Inputs */
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    select, button {
+      background: #0f172a;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 8px 12px;
+      font-family: var(--font-main);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      outline: none;
+      flex-grow: 1;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--accent);
+      color: #000;
+      box-shadow: var(--glow);
+    }
+
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      border-color: #334155;
+    }
+
+    /* Prompt Area Styling */
+    .typing-prompt {
+      background: rgba(0,0,0,0.4);
+      padding: 20px;
+      border-radius: 4px;
+      font-family: var(--font-code);
+      font-size: clamp(1rem, 2.5vh, 1.3rem);
+      line-height: 1.6;
+      flex-grow: 1;
+      overflow-y: auto; /* Internal scroll only */
+      border: 1px solid rgba(255,255,255,0.05);
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) transparent;
+    }
+
+    .typing-prompt::-webkit-scrollbar { width: 4px; }
+    .typing-prompt::-webkit-scrollbar-thumb { background: var(--accent); }
+    .typing-prompt span.spaceco { background: var(--green); border-radius: 3px 3px 0px 0px; opacity: 0.3;}
+    .typing-prompt span.correct { color: var(--green); text-shadow: 0 0 5px rgba(0, 255, 65, 0.4); }
+    .typing-prompt span.incorrect { color: var(--magenta);}
+    .typing-prompt span.spacein { background: var(--magenta);border-radius: 3px 3px 0px 0px; opacity: 0.3;}
+    .typing-prompt span.fixed { color: var(--accent); opacity: 0.8; }
+    .typing-prompt span.spacefi { background: var(--accent); border-radius: 3px 3px 0px 0px; opacity: 0.3;}
+    .typing-prompt span.active {
+      background: var(--accent-dim); 
+      border-bottom: 2px solid var(--accent); 
+      animation: pulse 1.5s infinite;
+      border-radius: 3px 3px 0px 0px;
+    }
+
+    @keyframes pulse {
+      0% { background: rgba(0, 242, 255, 0.1); }
+      50% { background: rgba(0, 242, 255, 0.3); }
+      100% { background: rgba(0, 242, 255, 0.1); }
+    }
+
+    textarea#input {
+      width: 100%;
+      height: 10vh;
+      background: #020617;
+      border: 1px solid #1e293b;
+      color: #fff;
+      padding: 15px;
+      font-family: var(--font-code);
+      font-size: 1rem;
+      resize: none;
+      flex-shrink: 0;
+    }
+
+    /* Sidebar/Keyboard Area */
+    aside {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-height: 0;
+    }
+
+    .keyboard-hud {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 5px;
+      padding: 15px;
+      background: #000;
+      border: 1px solid #1e293b;
+      border-radius: 4px;
+      flex-grow: 1;
+      align-content: start;
+    }
+
+    .key {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      padding: 1.5vh 0;
+      text-align: center;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      color: #475569;
+      font-weight: 700;
+      transition: none;
+    }
+
+    .key.active {
+      background: var(--accent);
+      color: #000;
+      box-shadow: var(--glow);
+      border-color: #fff;
+    }
+
+    .key.wide { grid-column: span 2; }
+    .key.space { grid-column: span 6; }
+
+    /* Modal Styling */
+    .custom-modal {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(500px, 90vw);
+      background: #0a0f18;
+      border: 2px solid var(--accent);
+      padding: 25px;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 0 100px #000;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      color: var(--accent);
+      margin-bottom: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    #para { 
+      width: 100%; height: 20vh; 
+      background: #000; color: #fff; 
+      border: 1px solid #1e293b; padding: 10px; 
+      font-family: var(--font-code); 
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 1100px) {
+      .main-layout { grid-template-columns: 1fr; }
+      aside { display: none; } /* Hide keyboard on smaller screens to save space */
+      .stats-container { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-height: 700px) {
+      h1 { font-size: 1.5rem; }
+      .stat-card { padding: 5px; }
+      .typing-prompt { font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <header class="header-hud">
+    <h1>CyberType.v3</h1>
+    <div id="status" style="color: var(--accent);">SYSTEM READY</div>
+  </header>
+
+  <section class="stats-container">
+    <div class="stat-card">
+      <div class="stat-label">(WPM)</div>
+      <div class="stat-value" id="wpm">00</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Precision</div>
+      <div class="stat-value" id="accuracy">100%</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Timer</div>
+      <div class="stat-value" id="timer">60s</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Typed Words</div>
+      <div class="stat-value" id="typedWords">0</div>
+    </div>
+  </section>
+
+  <div class="main-layout">
+    <div class="game-window">
+      <div class="control-row">
+        <select id="ptype">
+          <option value="Default">Standard Data</option>
+          <option value="Custom">User Protocol</option>
+        </select>
+        <select id="mode">
+          <option value="easy">Recruit</option>
+          <option value="medium" selected>Veteran</option>
+          <option value="hard">Elite</option>
+        </select>
+        <select id="duration">
+          <option value="30">30s</option>
+          <option value="60" selected>60s</option>
+          <option value="120">120s</option>
+        </select>
+        <button class="primary" id="startBtn">Initialize Test</button>
+        <button id="restartBtn">Reboot</button>
+        <button id="editBtn">Edit Data</button>
+      </div>
+
+      <div class="typing-prompt" id="prompt"></div>
+      <textarea id="input" placeholder=">> WAITING FOR INPUT..." disabled spellcheck="false"></textarea>
+      
+      <div style="display: flex; justify-content: space-between; color: #64748b; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;">
+        <span>Errors Detected: <b id="errors" style="color: var(--magenta);">0</b></span>
+        <span>Valid Entries: <b id="correct" style="color: var(--green);">0</b></span>
+      </div>
+    </div>
+
+    <aside>
+      <div class="stat-label" style="text-align: center; border-bottom: 1px solid #1e293b; padding-bottom: 5px;">Deck Mapping</div>
+      <div class="keyboard-hud" id="keyboard"></div>
+    </aside>
+  </div>
+</div>
+
+<div class="custom-modal" id="editModal">
+  <div class="modal-header">
+    <span>User Protocol Override</span>
+    <span style="cursor:pointer" id="closeModal">CLOSE [X]</span>
+  </div>
+  <textarea id="para" placeholder="Input custom stream... (Requires 99+ characters)"></textarea>
+  <div id="cinfo" class="char-limit-indicator" style="text-align: right; margin-top: 10px; font-weight: 700;">DATA LENGTH: 0</div>
+</div>
+
+<script>
+  // Logic remains identical to your analyzed version to ensure functionality.
+  const passages = {
+    easy: ['The sun is bright today and the sky looks clear and calm.', 'Typing every day helps you build speed and confidence quickly.'],
+    medium: ['JavaScript is a powerful language for creating interactive websites.', 'A strong typing habit improves productivity and reduces errors.'],
+    hard: ['An efficient developer balances speed, accuracy, and readability.', 'Mastering keyboard control and shortcuts improves professional output.']
+  };
+
+  const keyboardRows = [
+    ['Q','W','E','R','T','Y','U','I','O','P'],
+    ['A','S','D','F','G','H','J','K','L'],
+    ['Shift','Z','X','C','V','B','N','M','Backspace'],
+    ['Space']
+  ];
+
+  const promptEl = document.getElementById('prompt');
+  const inputEl = document.getElementById('input');
+  const wpmEl = document.getElementById('wpm');
+  const accuracyEl = document.getElementById('accuracy');
+  const timerEl = document.getElementById('timer');
+  const typedWordsEl = document.getElementById('typedWords');
+  const errorsEl = document.getElementById('errors');
+  const correctEl = document.getElementById('correct');
+  const statusEl = document.getElementById('status');
+  const startBtn = document.getElementById('startBtn');
+  const restartBtn = document.getElementById('restartBtn');
+  const editBtn = document.getElementById('editBtn');
+  const modeEl = document.getElementById('mode');
+  const ptypeEl = document.getElementById('ptype');
+  const editModal = document.getElementById('editModal');
+  const closeModal = document.getElementById('closeModal');
+  const paraInput = document.getElementById('para');
+  const cinfo = document.getElementById('cinfo');
+
+  let targetText = '';
+  let startTime = null;
+  let timerInterval = null;
+  let started = false;
+  let totalErrors = 0;
+  let mistakePositions = new Set();
+  let customPara = [''];
+
+  function renderKeyboard() {
+    const kbd = document.getElementById('keyboard');
+    kbd.innerHTML = '';
+    keyboardRows.flat().forEach(key => {
+      const div = document.createElement('div');
+      div.className = 'key' + (key === 'Space' ? ' space' : '') + (key === 'Shift' || key === 'Backspace' ? ' wide' : '');
+      div.textContent = key;
+      div.dataset.key = key.toLowerCase();
+      kbd.appendChild(div);
+    });
+  }
+
+  function highlightKey(ch) {
+    document.querySelectorAll('.key').forEach(k => k.classList.remove('active'));
+    const map = ch === ' ' ? 'space' : ch.toLowerCase();
+    const el = [...document.querySelectorAll('.key')].find(k => k.dataset.key === map);
+    if (el) el.classList.add('active');
+  }
+
+  function getRandomText() {
+    const list = ptypeEl.value === 'Custom' ? customPara : passages[modeEl.value];
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  function renderPrompt() {
+    promptEl.innerHTML = targetText.split('').map((ch, i) => {
+      const display = ch === ' ' ? ' ' : ch;
+      return `<span data-index="${i}">${display}</span>`;
+    }).join('');
+  }
+
+  function updateStyles(typed) {
+    const spans = promptEl.querySelectorAll('span');
+    let correctCount = 0;
+    spans.forEach((span, i) => {
+      span.className = '';
+      if (i < typed.length) {
+        if (typed[i] === targetText[i]) {
+          if(span.innerText === ' '){
+                      span.classList.add(mistakePositions.has(i) ? 'spacefi' : 'spaceco');
+          }else{
+          span.classList.add(mistakePositions.has(i) ? 'fixed' : 'correct');
+          }
+          correctCount++;
+        } else {
+          if(span.innerText === ' '){
+                      span.classList.add('spacein');
+          }else{
+          span.classList.add('incorrect');
+          }
+          if (!mistakePositions.has(i)) {
+            totalErrors++;
+            mistakePositions.add(i);
+          }
+        }
+      } else if (i === typed.length) {
+        span.classList.add('active');
+            highlightKey(span.innerText);
+
+      }
+    });
+
+    const elapsed = (Date.now() - startTime) / 1000 / 60;
+    const words = typed.trim().split(/\s+/).length;
+    wpmEl.textContent = elapsed > 0 ? Math.round(words / elapsed) : 0;
+    accuracyEl.textContent = typed.length > 0 ? Math.round((correctCount / (correctCount + totalErrors)) * 100) + '%' : '100%';
+    errorsEl.textContent = totalErrors;
+    correctEl.textContent = correctCount;
+    typedWordsEl.textContent = words;
+  }
+
+  editBtn.addEventListener('click', () => editModal.style.display = 'block');
+  closeModal.addEventListener('click', () => editModal.style.display = 'none');
+
+  paraInput.addEventListener('input', (e) => {
+    const len = e.target.value.trim().length;
+    cinfo.textContent = `DATA LENGTH: ${len}`;
+    if (len >= 99) {
+      customPara = [e.target.value];
+      cinfo.style.color = 'var(--green)';
+      restartTest();
+    } else {
+      cinfo.style.color = 'var(--magenta)';
+      customPara = [''];
+      ptypeEl.value = 'Default';
+      restartTest();
+    }
+  });
+
+  ptypeEl.addEventListener('change', (e) => {
+    if (e.target.value === 'Custom' && customPara[0].trim().length < 99) {
+      alert("CRITICAL: Custom buffer must exceed 99 characters.");
+      e.target.value = 'Default';
+    }
+    restartTest();
+  });
+
+  function startTest(e) {
+    targetText = getRandomText();
+    renderPrompt();
+    inputEl.disabled = false;
+    inputEl.value = '';
+    inputEl.focus();
+    totalErrors = 0;
+    mistakePositions.clear();
+    started = true;
+    startTime = Date.now();
+    statusEl.textContent = 'SYSTEM ACTIVE';
+    startBtn.disabled = true;
+    let time = parseInt(document.getElementById('duration').value);
+    timerInterval = setInterval(() => {
+      time--;
+      timerEl.textContent = time + 's';
+      if (time <= 0) {
+        clearInterval(timerInterval);
+        inputEl.disabled = true;
+        startBtn.disabled = false;
+        statusEl.textContent = 'SESSION ENDED';
+      }
+    }, 1000);
+  }
+
+  function restartTest() {
+    clearInterval(timerInterval);
+    started = false;
+    inputEl.disabled = true;
+    inputEl.value = '';
+    wpmEl.textContent = '00';
+    accuracyEl.textContent = '100%';
+    timerEl.textContent = document.getElementById('duration').value + 's';
+    statusEl.textContent = 'SYSTEM READY';
+    targetText = getRandomText();
+    renderPrompt();
+    startBtn.disabled = false;
+  }
+
+  inputEl.addEventListener('input', () => {
+    if (!started) return;
+    updateStyles(inputEl.value);
+    if (inputEl.value === targetText) {
+      clearInterval(timerInterval);
+      statusEl.textContent = 'DATA SYNCHRONIZED';
+      startBtn.disabled = false;
+    }
+  });
+
+
+
+  startBtn.addEventListener('click', startTest);
+  restartBtn.addEventListener('click', restartTest);
+  renderKeyboard();
+  restartTest();
+</script>
+</body>
+</html>
