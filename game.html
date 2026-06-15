@@ -2122,12 +2122,12 @@ if (gameState === 'gameOverAnimation' && gameOverStep > 0) return;
         if(window.innerWidth <= 720) mobileJumpBtn.style.display = 'inline-block';
 
         document.querySelector('.game-hub').addEventListener('mousedown', () => {
-            onUserInteraction();
             performJump();
+            onUserInteraction();
         }); 
        document.querySelector('body').addEventListener('mousedown', () => {
-            onUserInteraction();
             performJump();
+            onUserInteraction();
         }); 
         canvas.addEventListener('mousedown', () => { onUserInteraction();
             if (gameState === 'idle' || gameState === 'gameOverAnimation') startGame();
