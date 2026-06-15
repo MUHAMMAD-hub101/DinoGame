@@ -11,6 +11,16 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #030305; color: #ffffff; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .glow-text { text-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+@keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+        /* yahan 'linear' hona bohot zaroori hai */
+        animation: marquee 10s linear infinite;
+        /* width auto rakhein taake content ke hisab se set ho */
+        width: max-content;
+    }
     </style>
 </head>
 <body>
@@ -190,16 +200,41 @@
 
         <a href="/Portfolio" class="group block">
             <div class="glass p-6 rounded-xl hover:bg-yellow-500/10 transition cursor-pointer border border-white/5 hover:border-yellow-500/50">
-                <div class="w-10 h-10 mb-4 rounded-lg bg-gray-800 flex items-center justify-center text-gray-500 text-xs">N/A</div>
-                <h3 class="font-bold text-lg mb-4 text-white">Server-Side</h3>
+<div class="relative w-full h-10 mb-4 rounded-lg bg-gray-900 border border-white/5 flex items-center overflow-hidden">
+    
+    <div class="flex animate-marquee whitespace-nowrap"
+         style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+        
+        <span class="text-[10px] font-bold text-white-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-white-500 uppercase tracking-widest px-4">Pending ...</span>
+        
+        <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-white-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-4">Pending ...</span>
+    </div>
+</div> 
+<h3 class="font-bold text-lg mb-4 text-white">Server-Side</h3>
                 <span class="text-xs uppercase tracking-widest text-yellow-500 group-hover:text-white transition">Pending...</span>
             </div>
         </a>
 
         <a href="/Portfolio" class="group block">
             <div class="glass p-6 rounded-xl hover:bg-yellow-500/10 transition cursor-pointer border border-white/5 hover:border-yellow-500/50">
-                <div class="w-10 h-10 mb-4 rounded-lg bg-gray-800 flex items-center justify-center text-gray-500 text-xs">N/A</div>
-                <h3 class="font-bold text-lg mb-4 text-white">Voice-Generator</h3>
+<div class="relative w-full h-10 mb-4 rounded-lg bg-gray-900 border border-white/5 flex items-center overflow-hidden">
+    
+    <div class="flex animate-marquee whitespace-nowrap"
+         style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+        
+        <span class="text-[10px] font-bold text-white-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-white-500 uppercase tracking-widest px-4">Pending ...</span>
+        
+        <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-white-500 uppercase tracking-widest px-4">Pending ...</span>
+        <span class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-4">Pending ...</span>
+    </div>
+</div>                    <h3 class="font-bold text-lg mb-4 text-white">Voice-Generator</h3>
                 <span class="text-xs uppercase tracking-widest text-yellow-500 group-hover:text-white transition">Pending...</span>
             </div>
         </a>
