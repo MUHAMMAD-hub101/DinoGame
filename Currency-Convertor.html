@@ -7,7 +7,10 @@
     <title>Pro Currency Converter</title>
     <style>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none;     /* IE 10 and IE 11 */
+    user-select: none; }
         body { background: #0f172a; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .container { background: #1e293b; padding: 2rem; border-radius: 20px; width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .search-box { position: relative; margin-bottom: 20px; }
@@ -17,8 +20,19 @@
         .list div.highlighted { background: #38bdf8; color: #0f172a; }
         .swap-btn { text-align: center; margin: 10px 0; font-size: 1.5rem; cursor: pointer; color: #38bdf8; }
         button { width: 100%; padding: 15px; background: #3b82f6; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-        #result { margin-top: 20px; text-align: center; font-size: 1.4rem; font-weight: bold; color: #38bdf8; }
-        /* Poore HTML page ki scrollbar ki styling */
+#result {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03); /* Subtle dark background */
+    border: 1.5px solid rgba(56, 189, 248, 0.2); /* Soft blue border */
+    border-radius: 16px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #e2e8f0; /* Soft light text */
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}        /* Poore HTML page ki scrollbar ki styling */
 html::-webkit-scrollbar {
     width: 10px; /* Scrollbar ki motayi */
 }
@@ -77,12 +91,7 @@ html::-webkit-scrollbar-thumb:hover {
     text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
     /* Button ki styling (ispe position relative zaroori hai) */
-#convert {
-  position: relative;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
+
 
 /* Loader ka design (Chota spinner button ke hisab se) */
 .btn-loader {
@@ -109,7 +118,76 @@ html::-webkit-scrollbar-thumb:hover {
 #convert.is-loading .btn-loader {
   display: block; /* Loader ko dikhao */
 }
+#convert {
+    position: relative;
+    width: 100%;       /* Ya jo bhi aapne fix size rakha hai */
+    height: 52px;      /* Fix height dena zaroori hai */
+    border: none;
+    background: #3b82f6;
+    border-radius: 8px;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 10px 20px;
+    font-size: 16px;
+    box-sizing: border-box; 
+}
 
+/* Text aur Loader ko button ke center mein fix rakhein */
+.btn-text, .btn-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+/* Border effect ko button ke bahar/andar adjust karein */
+#convert::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 8px;
+    padding: 2px; /* Border ki motayi */
+    background: linear-gradient(90deg, #38bdf8, #fff, #38bdf8);
+    background-size: 200% 100%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: laser-run 1.5s linear infinite;
+    pointer-events: none; /* Click par effect na aaye */
+}
+/* 1. Input ko relative karein taake border effect uske upar aa sake */
+input {
+    position: relative;
+    border: 2px solid transparent; /* Default border transparent */
+    background-clip: padding-box;
+    transition: 0.3s;
+}
+
+/* 2. Focus hone par border ko animate karein */
+input:focus {
+    outline: none;
+    border-color: #38bdf8; /* Laser blue color */
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.5), 0 0 20px rgba(56, 189, 248, 0.2);
+}
+
+/* 3. Laser Glow Effect (Running Border Animation) */
+.search-box:has(input:focus)::after {
+    content: "";
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #38bdf8, #818cf8, #38bdf8);
+    background-size: 200% 200%;
+    z-index: -1;
+    animation: laser-run 2s linear infinite;
+}
+
+@keyframes laser-run {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 /* Spinner Animation */
 @keyframes spin {
   0% { transform: translate(-50%, -50%) rotate(0deg); }
@@ -367,41 +445,85 @@ const countryData = [
         items[highlightedIndex].scrollIntoView({ block: 'nearest' });
     }
 
-    function swap() {
-        let f = document.getElementById('fromInput');
-        let t = document.getElementById('toInput');
-        [f.value, t.value] = [t.value, f.value];
+function swap() {
+    let f = document.getElementById('fromInput');
+    let t = document.getElementById('toInput');
+    let amount = document.getElementById('amount').value;
+    let resultBox = document.getElementById('result');
+
+    // Values Swap
+    [f.value, t.value] = [t.value, f.value];
+
+    // Logic: Agar pehle se conversion ho chuki hai
+    if (lastFetchedRate !== null) {
+        // Swap state ko toggle karein
+        wasSwapped = !wasSwapped;
+        
+        // Naya rate calculate karein (1 / rate)
+        let activeRate = wasSwapped ? (1 / lastFetchedRate) : lastFetchedRate;
+        let finalValue = (parseFloat(amount) * activeRate).toFixed(6);
+        
+        resultBox.innerText = `${amount} ${f.value} = ${finalValue} ${t.value}`;
     }
+}
 const btn = document.getElementById("convert");
 const result = document.getElementById("result");
 
-btn.addEventListener('click', (e) => {
-    (async () => {
-        let amt = document.getElementById("amount").value;
-        let f = document.getElementById("fromInput").value;
-        let t = document.getElementById("toInput").value;
+btn.addEventListener('click', async () => {
+    // 1. Inputs get karein
+    let amtInput = document.getElementById("amount");
+    let fromInput = document.getElementById("fromInput");
+    let toInput = document.getElementById("toInput");
 
-        // 1. Button ko loading state me dalo aur disable karo
-        btn.classList.add("is-loading");
-        btn.disabled = true;
+    let amt = parseFloat(amtInput.value);
+    let f = fromInput.value.trim().toUpperCase();
+    let t = toInput.value.trim().toUpperCase();
 
-        try {
-            let res = await fetch(`https://open.er-api.com/v6/latest/${f}`);
-            let data = await res.json();
+    // 2. Amount Validation (Agar invalid hai to 1.00 set karo)
+    if (isNaN(amt) || amt <= 0) {
+        amt = 1.00;
+        amtInput.value = "1.00";
+    }
 
-            result.innerText = `${amt} ${f} = ${(amt * data.rates[t]).toFixed(2)} ${t}`;
-        } catch (error) {
-            console.error("Kuch galti hui:", error);
-            result.innerText = "Error fetching data. Please try again.";
-        } finally {
-            // 2. API call khatam hote hi loader hatao aur button enable karo
-            setTimeout(()=>{
+    // 3. Currency Existence Check (Kya code valid hai?)
+    const isValid = (code) => countryData.some(c => c.code === code);
+    
+    if (!isValid(f)) {
+        f = "SAR";
+        fromInput.value = "SAR";
+    }
+    if (!isValid(t)) {
+        t = "PKR";
+        toInput.value = "PKR";
+    }
+
+    // UI Updates
+    btn.classList.add("is-loading");
+    btn.disabled = true;
+
+    try {
+        let res = await fetch(`https://open.er-api.com/v6/latest/${f}`);
+        let data = await res.json();
+
+        if (data && data.rates && data.rates[t]) {
+            lastFetchedRate = data.rates[t];
+            wasSwapped = false;
+            
+            let finalValue = (amt * lastFetchedRate).toFixed(6);
+            result.innerText = `${amt} ${f} = ${finalValue} ${t}`;
+            result.style.color = "#38bdf8"; // Success color
+        } else {
+            throw new Error("Invalid Currency");
+        }
+    } catch (error) {
+        result.innerText = "Error: Invalid currency or network issue.";
+        result.style.color = "#ef4444"; // Error color (Red)
+    } finally {
+        setTimeout(() => {
             btn.classList.remove("is-loading");
             btn.disabled = false;
-            },100)
-
-        }
-    })();
+        }, 300);
+    }
 });
 
     document.onclick = (e) => {
